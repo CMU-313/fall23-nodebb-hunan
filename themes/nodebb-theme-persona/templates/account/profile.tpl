@@ -4,6 +4,9 @@
     <div class="profile row">
         <h1 class="fullname"><!-- IF fullname -->{fullname}<!-- ELSE -->{username}<!-- ENDIF fullname --></h1>
         <h2 class="username"><!-- IF !banned -->@{username}<!-- ELSE -->[[user:banned]]<!-- ENDIF !banned --></h2>
+        <div class="text-center">
+        <a href="{config.relative_path}/groups/{selectedGroup.slug}"><small class="label group-label inline-block" style="color:white;background-color: black;"><!-- IF selectedGroup.icon --><i class="fa {selectedGroup.icon}"></i> <!-- ENDIF selectedGroup.icon -->{accounttype}</small></a>
+        </div>
         <!-- IF isAdminOrGlobalModeratorOrModerator -->
         <!-- IF banned -->
         <div class="text-center">
