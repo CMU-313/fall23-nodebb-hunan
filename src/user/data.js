@@ -91,32 +91,29 @@ module.exports = function (User) {
     // interface User {
     //    calculateBadge(uid: number): Promise<string>;
     // }
-    User.calculateBadge = async function (uid) {
+    function calculateBadge (uid) {
 
         if (typeof uid !== 'number') {
             throw new TypeError('uid must be a number');
         }
-
-        const reputation = await user.getUserField(uid, 'reputation');
-        const postCount = await user.getUserField(uid, 'postcount');
         const userBadges = [];
 
         // users can have multiple badges based on
         // reputation and post count statistics
-        if (reputation > 5) {
-            userBadges.push('\u{1F451}');
-        } else if (reputation > 20) {
-            userBadges.push('\u{1F451}');
+        if (user.reputation > 5) {
+            userBadges.push('⭐');
+        } else if (user.reputation > 20) {
+            userBadges.push('🌟');
         } else {
-            userBadges.push('\u{1F451}');
+            userBadges.push('💫');
         }
 
-        if (postCount > 5) {
-            userBadges.push('\u{1F451}');
-        } else if (postCount > 20) {
-            userBadges.push('\u{1F451}');
+        if (user.postcount > 5) {
+            userBadges.push('🌱');
+        } else if (user.postcount > 20) {
+            userBadges.push('🌷');
         } else {
-            userBadges.push('\u{1F451}');
+            userBadges.push('🌳');
         }
 
         const result = userBadges.join('');
@@ -307,7 +304,7 @@ module.exports = function (User) {
                     );
                 }
 
-                const badges = User.calculateBadge(user.uid);
+                const badges = calculateBadge(user.uid);
                 user.username += " " + badges;
 
                 if (user.hasOwnProperty("email")) {
