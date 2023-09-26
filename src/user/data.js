@@ -119,7 +119,7 @@ module.exports = function (User) {
             userBadges.push('🌳');
         }
 
-        result = userBadges.join('');
+        const result = userBadges.join('');
 
         if (typeof result !== 'string') {
             throw new TypeError('The function must return a string');
