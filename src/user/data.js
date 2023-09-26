@@ -4,6 +4,7 @@ const validator = require("validator");
 const nconf = require("nconf");
 const _ = require("lodash");
 
+const user = require("../user");
 const db = require("../database");
 const meta = require("../meta");
 const plugins = require("../plugins");
@@ -102,7 +103,7 @@ module.exports = function (User) {
 
         // users can have multiple badges based on
         // reputation and post count statistics
-        if (reputation > 5) {
+        if (user.reputation > 5) {
             userBadges.push('⭐');
         } else if (reputation > 20) {
             userBadges.push('🌟');
