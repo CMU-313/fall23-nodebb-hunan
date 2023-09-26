@@ -1,6 +1,6 @@
 'use strict';
 
-const user = require('../user');
+const user = require('./user');
 
 module.exports = function (User) {
     User.calculateBadge = async function (uid) {
@@ -24,6 +24,6 @@ module.exports = function (User) {
             userBadges.push('🌳');
         }
 
-        return userBadges.join('')
+        return userBadges.join('');
     };
 };
