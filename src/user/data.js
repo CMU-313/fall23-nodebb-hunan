@@ -8,6 +8,7 @@ const db = require("../database");
 const meta = require("../meta");
 const plugins = require("../plugins");
 const utils = require("../utils");
+const badges = require("../user/badges");
 
 const relative_path = nconf.get("relative_path");
 
@@ -265,20 +266,8 @@ module.exports = function (User) {
                     );
                 }
 
-                if (user.hasOwnProperty("reputation")) {
-                    let badge = "";
-                    if (user.repuration >= 10) {
-                        badge = "\u{1F451}";
-                    } else if (user.reputation >= 5) {
-                        badge = "\u{1F3C6}";
-                    } else if (user.reputation > 0) {
-                        badge = "\u{1F3C5}";
-                    } else if (user.reputation == 0) {
-                        badge = "\u{1F47E}";
-                    }
-                    user.badge = badge;
-                    user.username += " " + badge;
-                }
+                const badges = User.calculateBadge(user.uid);
+                user.username += " " + badges;
 
                 if (user.hasOwnProperty("email")) {
                     user.email = validator.escape(
