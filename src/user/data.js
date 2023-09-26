@@ -204,12 +204,14 @@ module.exports = function (User) {
                     const crown = '\u{1F451}'
                     user.badge = crown
                 } else if (user.reputation >= 5) {
-                    user.badge = ":)"
+                    const trophy = '\u{1F3C6}'
+                    user.badge = trophy
                 } else if (user.reputation > 0) {
-                    const smiley = '\u{1F60A}'
-                    user.badge = smiley
+                    const medal = '\u{1F3C5}'
+                    user.badge = medal
                 } else if (user.reputation == 0) {
-                    user.badge = ":("
+                    const alien = '\u{1F47E}'
+                    user.badge = alien
                 } else {
                     user.badge = ""
                 }
