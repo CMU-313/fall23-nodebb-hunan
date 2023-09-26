@@ -8,7 +8,7 @@ const user = require('../user');
 // }
 module.exports = function (User) {
     User.calculateBadge = async function (uid) {
-        
+
         if (typeof uid !== 'number') {
             throw new TypeError('uid must be a number');
         }
@@ -35,12 +35,12 @@ module.exports = function (User) {
             userBadges.push('🌳');
         }
 
-        res = userBadges.join('');
+        result = userBadges.join('');
 
-        if (typeof res !== 'string') {
+        if (typeof result !== 'string') {
             throw new TypeError('The function must return a string');
         }
 
-        return res;
+        return result;
     };
 };
