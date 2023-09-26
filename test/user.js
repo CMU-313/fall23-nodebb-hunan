@@ -3073,17 +3073,17 @@ describe('User', () => {
 
     describe('calculateBadge', () => {
         it('should return ⭐ for reputation > 5 and 🌳 for postCount <= 5', async () => {
-            const userBadges = await calculateBadge(testUid);
+            const userBadges = await User.calculateBadge(testUid);
             assert.strictEqual(userBadges, '⭐🌳');
         });
-    
+
         it('should return 🌟 for reputation > 20 and 🌷 for postCount > 20', async () => {
-            const userBadges = await calculateBadge(testUid);
+            const userBadges = await User.calculateBadge(testUid);
             assert.strictEqual(userBadges, '🌟🌷');
         });
-    
+
         it('should return 💫 for reputation <= 5 and 🌱 for postCount > 5', async () => {
-            const userBadges = await calculateBadge(testUid);
+            const userBadges = await User.calculateBadge(testUid);
             assert.strictEqual(userBadges, '💫🌱');
         });
     });
