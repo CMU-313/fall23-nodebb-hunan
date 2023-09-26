@@ -8,7 +8,6 @@ const db = require("../database");
 const meta = require("../meta");
 const plugins = require("../plugins");
 const utils = require("../utils");
-const badges = require("../user/badges");
 
 const relative_path = nconf.get("relative_path");
 
