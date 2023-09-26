@@ -1,10 +1,5 @@
 'use strict';
 
-const async = require('async');
-const nconf = require('nconf');
-const validator = require('validator');
-
-const db = require('../database');
 const user = require('../user');
 
 module.exports = function (User) {
@@ -14,21 +9,21 @@ module.exports = function (User) {
         const userBadges = [];
 
         if (reputation > 5) {
-            userBadges.push("⭐");
+            userBadges.push('⭐');
         } else if (reputation > 20) {
-            userBadges.push("🌟");
+            userBadges.push('🌟');
         } else {
-            userBadges.push("💫");
+            userBadges.push('💫');
         }
 
         if (postCount > 5) {
-            userBadges.push("🌱");
+            userBadges.push('🌱');
         } else if (postCount > 20) {
-            userBadges.push("🌷");
+            userBadges.push('🌷');
         } else {
-            userBadges.push("🌳");
+            userBadges.push('🌳');
         }
 
-        return userBadges.join("")
+        return userBadges.join('')
     };
 };
