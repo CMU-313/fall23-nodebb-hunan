@@ -1,6 +1,6 @@
 'use strict';
 
-const user = require('./user');
+const user = require('../user');
 
 module.exports = function (User) {
     User.calculateBadge = async function (uid) {
