@@ -169,7 +169,7 @@ describe('authentication', () => {
             }, (err, response, body) => {
                 assert.ifError(err);
                 assert(body);
-                assert.equal(body.username, 'regular');
+                assert.equal(body.username, 'regular 💫🌳');
                 assert.equal(body.email, 'regular@nodebb.org');
                 db.getObject(`uid:${regularUid}:sessionUUID:sessionId`, (err, sessions) => {
                     assert.ifError(err);
