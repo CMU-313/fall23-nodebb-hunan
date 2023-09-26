@@ -48,7 +48,7 @@ module.exports = function (Posts) {
             }
             userData.signature = signature;
             userData.custom_profile_info = customProfileInfo.profile;
-            userData.display_accounttype = 'ACCOUNT TYPE'
+            userData.display_accounttype = 'ACCOUNT TYPE';
 
             return await plugins.hooks.fire('filter:posts.modifyUserInfo', userData);
         }));
@@ -63,7 +63,7 @@ module.exports = function (Posts) {
                 postData.user.fullname = postData.user.username;
             }
             postData.user.displayname = postData.user.username;
-            //postData.user.display_accounttype = postData.user.accounttype;
+            // postData.user.display_accounttype = postData.user.accounttype;
         }
     };
 
@@ -106,7 +106,7 @@ module.exports = function (Posts) {
             'uid', 'username', 'fullname', 'userslug',
             'reputation', 'postcount', 'topiccount', 'picture',
             'signature', 'banned', 'banned:expire', 'status',
-            'lastonline', 'groupTitle', 'mutedUntil', 'accounttype'
+            'lastonline', 'groupTitle', 'mutedUntil', 'accounttype',
         ];
         const result = await plugins.hooks.fire('filter:posts.addUserFields', {
             fields: fields,
