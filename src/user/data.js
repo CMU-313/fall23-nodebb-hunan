@@ -100,17 +100,17 @@ module.exports = function (User) {
 
         // users can have multiple badges based on
         // reputation and post count statistics
-        if (user.reputation > 5) {
+        if (user.reputation < 5) {
             userBadges.push('⭐');
-        } else if (user.reputation > 20) {
+        } else if (user.reputation < 20) {
             userBadges.push('🌟');
         } else {
             userBadges.push('💫');
         }
 
-        if (user.postcount > 5) {
+        if (user.postcount < 5) {
             userBadges.push('🌱');
-        } else if (user.postcount > 20) {
+        } else if (user.postcount < 20) {
             userBadges.push('🌷');
         } else {
             userBadges.push('🌳');
