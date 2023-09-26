@@ -4,6 +4,7 @@ const validator = require("validator");
 const nconf = require("nconf");
 const _ = require("lodash");
 
+const user = require("../user");
 const db = require("../database");
 const meta = require("../meta");
 const plugins = require("../plugins");
@@ -84,6 +85,44 @@ module.exports = function (User) {
         status: "offline",
         reputation: 0,
         "email:confirmed": 0,
+    };
+
+    // type signature:
+    // interface User {
+    //    calculateBadge(uid: number): Promise<string>;
+    // }
+    function calculateBadge (uid) {
+
+        if (typeof uid !== 'number') {
+            throw new TypeError('uid must be a number');
+        }
+        const userBadges = [];
+
+        // users can have multiple badges based on
+        // reputation and post count statistics
+        if (user.reputation > 5) {
+            userBadges.push('⭐');
+        } else if (user.reputation > 20) {
+            userBadges.push('🌟');
+        } else {
+            userBadges.push('💫');
+        }
+
+        if (user.postcount > 5) {
+            userBadges.push('🌱');
+        } else if (user.postcount > 20) {
+            userBadges.push('🌷');
+        } else {
+            userBadges.push('🌳');
+        }
+
+        const result = userBadges.join('');
+
+        if (typeof result !== 'string') {
+            throw new TypeError('The function must return a string');
+        }
+
+        return result;
     };
 
     User.getUsersFields = async function (uids, fields) {
@@ -265,20 +304,8 @@ module.exports = function (User) {
                     );
                 }
 
-                if (user.hasOwnProperty("reputation")) {
-                    let badge = "";
-                    if (user.repuration >= 10) {
-                        badge = "\u{1F451}";
-                    } else if (user.reputation >= 5) {
-                        badge = "\u{1F3C6}";
-                    } else if (user.reputation > 0) {
-                        badge = "\u{1F3C5}";
-                    } else if (user.reputation == 0) {
-                        badge = "\u{1F47E}";
-                    }
-                    user.badge = badge;
-                    user.username += " " + badge;
-                }
+                const badges = calculateBadge(user.uid);
+                user.username += " " + badges;
 
                 if (user.hasOwnProperty("email")) {
                     user.email = validator.escape(
