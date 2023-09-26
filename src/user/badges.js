@@ -8,6 +8,8 @@ module.exports = function (User) {
         const postCount = await user.getUserField(uid, 'postcount');
         const userBadges = [];
 
+        // users can have multiple badges based on
+        // reputation and post count statistics
         if (reputation > 5) {
             userBadges.push('⭐');
         } else if (reputation > 20) {
