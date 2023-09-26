@@ -2,8 +2,17 @@
 
 const user = require('../user');
 
+// type signature:
+// interface User {
+//    calculateBadge(uid: number): Promise<string>;
+// }
 module.exports = function (User) {
     User.calculateBadge = async function (uid) {
+        
+        if (typeof uid !== 'number') {
+            throw new TypeError('uid must be a number');
+        }
+
         const reputation = await user.getUserField(uid, 'reputation');
         const postCount = await user.getUserField(uid, 'postcount');
         const userBadges = [];
@@ -26,6 +35,12 @@ module.exports = function (User) {
             userBadges.push('🌳');
         }
 
-        return userBadges.join('');
+        res = userBadges.join('');
+
+        if (typeof res !== 'string') {
+            throw new TypeError('The function must return a string');
+        }
+
+        return res;
     };
 };
