@@ -20,7 +20,7 @@ const intFields = [
 
 module.exports = function (User) {
     const fieldWhitelist = [
-        'uid', 'username', 'userslug', 'email', 'email:confirmed', 'joindate', 'accounttype',
+        'uid', 'username', 'badge', 'userslug', 'email', 'email:confirmed', 'joindate', 'accounttype',
         'lastonline', 'picture', 'icon:bgColor', 'fullname', 'location', 'birthday', 'website',
         'aboutme', 'signature', 'uploadedpicture', 'profileviews', 'reputation',
         'postcount', 'topiccount', 'lastposttime', 'banned', 'banned:expire',
@@ -31,6 +31,7 @@ module.exports = function (User) {
     User.guestData = {
         uid: 0,
         username: '[[global:guest]]',
+        badge: 0,
         displayname: '[[global:guest]]',
         userslug: '',
         fullname: '[[global:guest]]',
@@ -196,6 +197,22 @@ module.exports = function (User) {
             if (user.hasOwnProperty('username')) {
                 parseDisplayName(user, uidToSettings);
                 user.username = validator.escape(user.username ? user.username.toString() : '');
+            }
+
+            if (user.hasOwnProperty('reputation')) {
+                if (user.repuration >= 10) {
+                    const crown = '\u{1F451}'
+                    user.badge = crown
+                } else if (user.reputation >= 5) {
+                    user.badge = ":)"
+                } else if (user.reputation > 0) {
+                    const smiley = '\u{1F60A}'
+                    user.badge = smiley
+                } else if (user.reputation == 0) {
+                    user.badge = ":("
+                } else {
+                    user.badge = ""
+                }
             }
 
             if (user.hasOwnProperty('email')) {
