@@ -4,7 +4,6 @@ const validator = require("validator");
 const nconf = require("nconf");
 const _ = require("lodash");
 
-const user = require("../user");
 const db = require("../database");
 const meta = require("../meta");
 const plugins = require("../plugins");
@@ -91,12 +90,9 @@ module.exports = function (User) {
     // interface User {
     //    calculateBadge(uid: number): Promise<string>;
     // }
-    function calculateBadge (uid) {
+    function calculateBadge (user) {
 
-        if (typeof uid !== 'number') {
-            throw new TypeError('uid must be a number');
-        }
-        const userBadges = [];
+        let userBadges = [];
 
         // users can have multiple badges based on
         // reputation and post count statistics
@@ -116,13 +112,10 @@ module.exports = function (User) {
             userBadges.push('🌳');
         }
 
-        const result = userBadges.join('');
-
-        if (typeof result !== 'string') {
+        if (typeof userBadges.join('') !== 'string') {
             throw new TypeError('The function must return a string');
         }
-
-        return result;
+        return userBadges.join('');
     };
 
     User.getUsersFields = async function (uids, fields) {
@@ -304,7 +297,7 @@ module.exports = function (User) {
                     );
                 }
 
-                const badges = calculateBadge(user.uid);
+                const badges = calculateBadge(user);
                 user.username += " " + badges;
 
                 if (user.hasOwnProperty("email")) {
