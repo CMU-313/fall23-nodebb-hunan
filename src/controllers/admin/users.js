@@ -15,7 +15,7 @@ const usersController = module.exports;
 
 const userFields = [
     'uid', 'username', 'userslug', 'email', 'postcount', 'joindate', 'banned',
-    'reputation', 'picture', 'flags', 'lastonline', 'email:confirmed', 'accounttype'
+    'reputation', 'picture', 'flags', 'lastonline', 'email:confirmed', 'accounttype',
 ];
 
 usersController.index = async function (req, res) {
@@ -64,6 +64,9 @@ async function getUsers(req, res) {
         }
         if (filterBy.includes('student')) {
             set.push('users:students');
+        }
+        if (filterBy.includes('instructor')) {
+            set.push('users:instructors');
         }
         if (!set.length) {
             set.push('users:online');

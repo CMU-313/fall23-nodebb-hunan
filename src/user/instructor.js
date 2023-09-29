@@ -1,7 +1,6 @@
 'use strict';
 
 const db = require('../database');
-
 const batch = require('../batch');
 const user = require('.');
 const groups = require('../groups');
@@ -10,7 +9,7 @@ const meta = require('../meta');
 
 const now = Date.now();
 module.exports = {
-    name: 'Create student/instructor user groups',
+    name: 'Create instructor user groups',
     timestamp: Date.UTC(2020, 9, 13),
     method: async function () {
         const { progress } = this;
@@ -18,10 +17,10 @@ module.exports = {
         const maxGroupLength = meta.config.maximumGroupNameLength;
         meta.config.maximumGroupNameLength = 30;
         const timestamp = await db.getObjectField('group:administrators', 'timestamp');
-        const studentExists = await groups.exists('students');
-        if (!studentExists) {
+        const instructorExists = await groups.exists('instructors');
+        if (!instructorExists) {
             await groups.create({
-                name: 'students',
+                name: 'instructors',
                 hidden: 1,
                 private: 1,
                 system: 1,
@@ -32,15 +31,15 @@ module.exports = {
         }
         // restore setting
         meta.config.maximumGroupNameLength = maxGroupLength;
-        await batch.processSortedSet('users:students', async (uids) => {
+        await batch.processSortedSet('users:instructors', async (uids) => {
             progress.incr(uids.length);
-            const userData = await user.getUsersFields(uids, ['uid', 'accounttype:student']);
+            const userData = await user.getUsersFields(uids, ['uid', 'accounttype:instructor']);
 
-            const student = userData.filter(u => parseInt(u['accounttype:student'], 10) === 1);
+            const instructor = userData.filter(u => parseInt(u['accounttype:instructor'], 10) === 1);
             await db.sortedSetAdd(
-                'group:students:members',
-                student.map(() => now),
-                student.map(u => u.uid)
+                'group:instructors:members',
+                instructor.map(() => now),
+                instructor.map(u => u.uid)
             );
         }, {
             batch: 500,
@@ -48,9 +47,9 @@ module.exports = {
         });
 
         await db.delete('users:notvalidated');
-        //        await updatePrivilges();
+        //       await updatePrivilges();
 
-        const studentCount = await db.sortedSetCard('group:students:members');
-        await db.setObjectField('group:students', 'memberCount', studentCount);
+        const instructorCount = await db.sortedSetCard('group:instructors:members');
+        await db.setObjectField('group:instructors', 'memberCount', instructorCount);
     },
 };

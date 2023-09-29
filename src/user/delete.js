@@ -77,6 +77,8 @@ module.exports = function (User) {
             'users:banned:expire',
             'users:flags',
             'users:online',
+            'users:students',
+            'users:instructors',
             'digest:day:uids',
             'digest:week:uids',
             'digest:biweek:uids',
