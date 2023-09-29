@@ -21,6 +21,7 @@ usersController.index = async function (req, res, next) {
         'sort-reputation': usersController.getUsersSortedByReputation,
         banned: usersController.getBannedUsers,
         flagged: usersController.getFlaggedUsers,
+        students: usersController.getStudentUsers
     };
 
     if (req.query.query) {
@@ -44,6 +45,29 @@ usersController.search = async function (req, res) {
 };
 
 usersController.getOnlineUsers = async function (req, res) {
+    const [userData, guests] = await Promise.all([
+        usersController.getUsers('users:online', req.uid, req.query),
+        require('../socket.io/admin/rooms').getTotalGuestCount(),
+    ]);
+
+    let hiddenCount = 0;
+    if (!userData.isAdminOrGlobalMod) {
+        userData.users = userData.users.filter((user) => {
+            const showUser = user && (user.uid === req.uid || user.userStatus !== 'offline');
+            if (!showUser) {
+                hiddenCount += 1;
+            }
+            return showUser;
+        });
+    }
+
+    userData.anonymousUserCount = guests + hiddenCount;
+    userData.timeagoCutoff = 1000 * 60 * 60 * 24;
+
+    await render(req, res, userData);
+};
+
+usersController.getStudentUsers = async function (req, res) {
     const [userData, guests] = await Promise.all([
         usersController.getUsers('users:online', req.uid, req.query),
         require('../socket.io/admin/rooms').getTotalGuestCount(),

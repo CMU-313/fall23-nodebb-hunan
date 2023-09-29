@@ -62,6 +62,9 @@ async function getUsers(req, res) {
         if (filterBy.includes('banned')) {
             set.push('users:banned');
         }
+        if (filterBy.includes('student')) {
+            set.push('users:students');
+        }
         if (!set.length) {
             set.push('users:online');
             sortBy = 'lastonline';
