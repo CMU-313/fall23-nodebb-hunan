@@ -5,15 +5,12 @@
             <i component="user/status" class="fa fa-circle status {posts.user.status}" title="[[global:{posts.user.status}]]"></i>
         </a>
     </div>
+
     <small class="pull-left">
         <strong>
             <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">{posts.user.displayname}</a>
         </strong>
-        <strong>
-        <span style = "color:white !important; background-color: #D3D3D3;">
-        <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">   {posts.user.accounttype}</a>
-        </span>
-        </strong>
+
         <!-- IMPORT partials/topic/badge.tpl -->
 
         <!-- IF posts.user.banned -->
@@ -47,6 +44,14 @@
         <span class="visible-xs-inline-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
             <a class="permalink" href="{config.relative_path}/post/{posts.pid}"><span class="timeago" title="{posts.timestampISO}"></span></a>
         </span>
+    </small>
+
+    <small class="pull-right">
+        <span class="bookmarked"><i class="fa fa-bookmark-o"></i></span>
+    </small>
+
+    <small class="pull-right">
+        <i class="fa fa-fw fa-thumbtack" component="post/replies/pin"></i>
     </small>
 </div>
 
