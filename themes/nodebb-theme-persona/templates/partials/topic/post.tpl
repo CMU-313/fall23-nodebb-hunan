@@ -51,7 +51,8 @@
     </small>
 
     <small class="pull-right">
-        <i class="fa fa-fw fa-thumbtack" component="post/replies/pin"></i>
+        <i class="fa fa-fw fa-thumbtack" id="pinIcon" component="post/replies/pin" onclick="toggleEndorsedText()"></i>
+        <div class="endorsed-text" style="display: none;">endorsed answer</div>
     </small>
 </div>
 

@@ -86,6 +86,38 @@ module.exports = function (User) {
         "email:confirmed": 0,
     };
 
+    // type signature:
+    // interface User {
+    //    calculateBadge(uid: number): Promise<string>;
+    // }
+    function calculateBadge (user) {
+
+        let userBadges = [];
+
+        // users can have multiple badges based on
+        // reputation and post count statistics
+        if (user.reputation < 5) {
+            userBadges.push('⭐');
+        } else if (user.reputation < 20) {
+            userBadges.push('🌟');
+        } else {
+            userBadges.push('💫');
+        }
+
+        if (user.postcount < 5) {
+            userBadges.push('🌱');
+        } else if (user.postcount < 20) {
+            userBadges.push('🌷');
+        } else {
+            userBadges.push('🌳');
+        }
+
+        if (typeof userBadges.join('') !== 'string') {
+            throw new TypeError('The function must return a string');
+        }
+        return userBadges.join('');
+    };
+
     User.getUsersFields = async function (uids, fields) {
         if (!Array.isArray(uids) || !uids.length) {
             return [];
@@ -265,20 +297,8 @@ module.exports = function (User) {
                     );
                 }
 
-                if (user.hasOwnProperty("reputation")) {
-                    let badge = "";
-                    if (user.repuration >= 10) {
-                        badge = "\u{1F451}";
-                    } else if (user.reputation >= 5) {
-                        badge = "\u{1F3C6}";
-                    } else if (user.reputation > 0) {
-                        badge = "\u{1F3C5}";
-                    } else if (user.reputation == 0) {
-                        badge = "\u{1F47E}";
-                    }
-                    user.badge = badge;
-                    user.username += " " + badge;
-                }
+                const badges = calculateBadge(user);
+                user.username += " " + badges;
 
                 if (user.hasOwnProperty("email")) {
                     user.email = validator.escape(
