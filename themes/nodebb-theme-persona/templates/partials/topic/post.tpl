@@ -51,8 +51,21 @@
     </small>
 
     <small class="pull-right">
-        <i class="fa fa-fw fa-thumbtack" id="pinIcon" component="post/replies/pin" onclick="toggleEndorsedText()"></i>
-        <div class="endorsed-text" style="display: none;">endorsed answer</div>
+        <button id="toggleEndorseReply" onclick="toggleDisplay('myDiv')">Endorse Reply</button>
+        <div id="myDiv" style="display: none;">
+            Endorsed by Person
+        </div>
+
+        <script>
+            function toggleDisplay(elementId) {
+                const element = document.getElementById(elementId);
+                if (element.style.display === 'none' || element.style.display === '') {
+                    element.style.display = 'block'; // Show the element
+                } else {
+                    element.style.display = 'none'; // Hide the element
+                }
+            }
+        </script>
     </small>
 </div>
 

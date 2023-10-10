@@ -10,7 +10,6 @@ define('forum/topic/replies', ['forum/topic/posts', 'hooks', 'alerts'], function
         const open = button.find('[component="post/replies/open"]');
         const loading = button.find('[component="post/replies/loading"]');
         const close = button.find('[component="post/replies/close"]');
-        const pin = button.find('[component="post/replies/pin"]');
 
         if (open.is(':not(.hidden)') && loading.is('.hidden')) {
             open.addClass('hidden');
