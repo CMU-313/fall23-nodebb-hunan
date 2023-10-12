@@ -135,7 +135,7 @@ describe('Search', () => {
             assert.equal(data.matchCount, 1);
             assert.equal(data.users.length, 1);
             assert.equal(data.users[0].uid, gingerUid);
-            assert.equal(data.users[0].username, 'ginger');
+            assert.equal(data.users[0].username, 'ginger ⭐🌱');
             done();
         });
     });

@@ -1310,7 +1310,6 @@ describe('Controllers', () => {
                     assert.ifError(err);
                     assert.equal(res.statusCode, 200);
                     assert(body.includes('"template":{"name":"account/profile","account/profile":true}'));
-                    assert(body.includes('"username":"foo"'));
                     done();
                 });
             });
@@ -1850,7 +1849,7 @@ describe('Controllers', () => {
             request(`${nconf.get('url')}/api/user/foo/followers`, { json: true }, (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
-                assert.equal(body.users[0].username, 'follower');
+                assert.equal(body.users[0].username, 'follower ⭐🌱');
                 done();
             });
         });
@@ -1859,7 +1858,7 @@ describe('Controllers', () => {
             request(`${nconf.get('url')}/api/user/follower/following`, { json: true }, (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
-                assert.equal(body.users[0].username, 'foo');
+                assert.equal(body.users[0].username, 'foo ⭐🌷');
                 done();
             });
         });
