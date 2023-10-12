@@ -74,7 +74,6 @@ module.exports = function (Posts) {
     };
 
     async function addReplyTo(postData, timestamp) {
-        // TODO: change this to take input from onClick when we have a way to pin replies
         const isPinned = 0;
         if (!postData.toPid) {
             return;
@@ -90,7 +89,6 @@ module.exports = function (Posts) {
         const arrayOfReplyPids = await db.getSortedSetsMembers(postData.map(p => `pid:${p.pid}:replies`));
         for (const pid of arrayOfReplyPids) { 
             if (pid.split(',')[1] === '1') {
-                // is there a reply id we can push here?
                 pin = pid;
             }
         }
