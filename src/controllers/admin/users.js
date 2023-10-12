@@ -15,7 +15,7 @@ const usersController = module.exports;
 
 const userFields = [
     'uid', 'username', 'userslug', 'email', 'postcount', 'joindate', 'banned',
-    'reputation', 'picture', 'flags', 'lastonline', 'email:confirmed',
+    'reputation', 'picture', 'flags', 'lastonline', 'email:confirmed', 'accounttype',
 ];
 
 usersController.index = async function (req, res) {
@@ -47,6 +47,9 @@ async function getUsers(req, res) {
             joindate: 'users:joindate',
             lastonline: 'users:online',
             flags: 'users:flags',
+            // students: 'users:students',
+            // instructors: 'users:instructors',
+            // Commented out due to incomplete feature
         };
 
         const set = [];
@@ -62,6 +65,14 @@ async function getUsers(req, res) {
         if (filterBy.includes('banned')) {
             set.push('users:banned');
         }
+        /*
+        if (filterBy.includes('students')) {
+            set.push('users:students');
+        }
+        if (filterBy.includes('instructors')) {
+            set.push('users:instructors');
+        }
+        */ // Commented out due to incomplete feature
         if (!set.length) {
             set.push('users:online');
             sortBy = 'lastonline';

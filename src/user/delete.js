@@ -77,6 +77,9 @@ module.exports = function (User) {
             'users:banned:expire',
             'users:flags',
             'users:online',
+            // 'users:students',
+            // 'users:instructors',
+            // Commented out due to incomplete feature
             'digest:day:uids',
             'digest:week:uids',
             'digest:biweek:uids',

@@ -87,7 +87,8 @@ module.exports = function (User) {
             ['username:uid', userData.uid, userData.username],
             [`user:${userData.uid}:usernames`, timestamp, `${userData.username}:${timestamp}`],
             ['username:sorted', 0, `${userData.username.toLowerCase()}:${userData.uid}`],
-            // ['username'],
+            // ['users:accounttype', userData.accounttype, userData.uid],
+            // Seems to create error, could not figure out source of error
             ['userslug:uid', userData.uid, userData.userslug],
             ['users:joindate', timestamp, userData.uid],
             ['users:online', timestamp, userData.uid],
