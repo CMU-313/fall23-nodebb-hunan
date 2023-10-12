@@ -48,6 +48,9 @@
             <a class="permalink" href="{config.relative_path}/post/{posts.pid}"><span class="timeago" title="{posts.timestampISO}"></span></a>
         </span>
     </small>
+    <small class="pull-right">
+        <span class="bookmarked"><i class="fa fa-bookmark-o"></i></span>
+    </small>
 </div>
 
 <br />
