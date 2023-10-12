@@ -62,18 +62,23 @@
         {{{ end }}}
 
         <div>
-            <button id="toggleEndorseReply" onclick="toggleDisplay('myDiv')">Endorse This Post</button>
+            <button id="toggleButton" style="background-color:#ffffcc; border-radius: 15px; cursor: pointer;" onclick="toggleDisplay('myDiv', 'toggleButton')">
+                Endorse This Post
+            </button>
             <div id="myDiv" style="display: none;">
                 This post has been endorsed.
             </div>
 
             <script>
-                function toggleDisplay(elementId) {
-                    const element = document.getElementById(elementId);
-                    if (element.style.display === 'none' || element.style.display === '') {
-                        element.style.display = 'block';
+                function toggleDisplay(textID, buttonID) {
+                    const text = document.getElementById(textID);
+                    const button = document.getElementById(buttonID);
+                    if (text.style.display === 'none' || text.style.display === '') {
+                        text.style.display = 'block';
+                        button.innerText = 'Unendorse This Post';
                     } else {
-                        element.style.display = 'none';
+                        text.style.display = 'none';
+                        button.innerText = 'Endorse This Post';
                     }
                 }
             </script>
