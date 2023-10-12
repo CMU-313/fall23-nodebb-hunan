@@ -10,6 +10,8 @@ const topics = require('../topics');
 const categories = require('../categories');
 const groups = require('../groups');
 const utils = require('../utils');
+const { array } = require('yargs');
+const { idText } = require('typescript');
 
 module.exports = function (Posts) {
     Posts.create = async function (data) {
@@ -63,7 +65,6 @@ module.exports = function (Posts) {
             groups.onNewPostMade(postData),
             addReplyTo(postData, timestamp),
             Posts.uploads.sync(postData.pid),
-            returnIdIfReplyIsPinned(postData),
         ]);
 
         result = await plugins.hooks.fire('filter:post.get', { post: postData, uid: data.uid });
@@ -77,11 +78,12 @@ module.exports = function (Posts) {
             return;
         }
         await Promise.all([
-            db.sortedSetAdd(`pid:${postData.toPid}:replies`, timestamp, postData.pid),
+            db.sortedSetAdd(`pid:${postData.toPid}:replies`, timestamp, postData.pid + ',' + isPinned.toString()),
             db.incrObjectField(`post:${postData.toPid}`, 'replies'),
         ]);
+        returnIdIfReplyIsPinned(postData)
     }
-  
+
     async function returnIdIfReplyIsPinned(postData) {
         let pin = '';
         const arrayOfReplyPids = await db.getSortedSetsMembers(postData.map(p => `pid:${p.pid}:replies`));
