@@ -10,8 +10,6 @@ const topics = require('../topics');
 const categories = require('../categories');
 const groups = require('../groups');
 const utils = require('../utils');
-const { array } = require('yargs');
-const { idText } = require('typescript');
 
 module.exports = function (Posts) {
     Posts.create = async function (data) {
@@ -74,26 +72,12 @@ module.exports = function (Posts) {
     };
 
     async function addReplyTo(postData, timestamp) {
-        // TODO: change this to take input from onClick when we have a way to pin replies
-        const isPinned = 0;
         if (!postData.toPid) {
             return;
         }
         await Promise.all([
-            db.sortedSetAdd(`pid:${postData.toPid}:replies`, timestamp, postData.pid + ',' + isPinned.toString()),
+            db.sortedSetAdd(`pid:${postData.toPid}:replies`, timestamp, postData.pid),
             db.incrObjectField(`post:${postData.toPid}`, 'replies'),
         ]);
-    }
-
-    async function returnIdIfReplyIsPinned(postData) {
-        let pin = '';
-        const arrayOfReplyPids = await db.getSortedSetsMembers(postData.map(p => `pid:${p.pid}:replies`));
-        for (const pid of arrayOfReplyPids) { 
-            if (pid.split(',')[1] === '1') {
-                // is there a reply id we can push here?
-                pin = pid;
-            }
-        }
-        return pin;
     }
 };
