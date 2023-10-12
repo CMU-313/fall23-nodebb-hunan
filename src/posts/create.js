@@ -63,6 +63,7 @@ module.exports = function (Posts) {
             groups.onNewPostMade(postData),
             addReplyTo(postData, timestamp),
             Posts.uploads.sync(postData.pid),
+            returnIdIfReplyIsPinned(postData),
         ]);
 
         result = await plugins.hooks.fire('filter:post.get', { post: postData, uid: data.uid });
@@ -72,7 +73,6 @@ module.exports = function (Posts) {
     };
 
     async function addReplyTo(postData, timestamp) {
-        const isPinned = 0;
         if (!postData.toPid) {
             return;
         }
