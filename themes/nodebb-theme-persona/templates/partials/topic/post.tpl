@@ -10,8 +10,8 @@
             <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">{posts.user.displayname}</a>
         </strong>
         <strong>
-        <span style = "color:white !important; background-color: #D3D3D3;">
-        <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">   {posts.user.accounttype}</a>
+        <span style = "color:white !important; background-color: darkgray !important;">
+        <a itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">   {posts.user.accounttype}</a>
         </span>
         </strong>
         <!-- IMPORT partials/topic/badge.tpl -->

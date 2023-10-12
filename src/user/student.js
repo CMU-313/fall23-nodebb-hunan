@@ -1,5 +1,5 @@
- 'use strict';
-
+/* 'use strict';
+The whole file has been commented out due to an incomplete feature
 const db = require('../database');
 
 const batch = require('../batch');
@@ -54,3 +54,4 @@ module.exports = {
         await db.setObjectField('group:students', 'memberCount', studentCount);
     },
 };
+*/

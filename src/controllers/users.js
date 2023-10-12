@@ -21,8 +21,9 @@ usersController.index = async function (req, res, next) {
         'sort-reputation': usersController.getUsersSortedByReputation,
         banned: usersController.getBannedUsers,
         flagged: usersController.getFlaggedUsers,
-        students: usersController.getStudentUsers,
-        instructors: usersController.getInstructorUsers,
+        // students: usersController.getStudentUsers,
+        // instructors: usersController.getInstructorUsers,
+        // Commented out due to incomplete feature
     };
 
     if (req.query.query) {
@@ -112,7 +113,7 @@ usersController.getOnlineUsers = async function (req, res) {
 //     userData.timeagoCutoff = 1000 * 60 * 60 * 24;
 
 //     await render(req, res, userData);
-// };
+// }; Commented out due to incomplete feature
 
 usersController.getUsersSortedByPosts = async function (req, res) {
     await usersController.renderUsersPage('users:postcount', req, res);
@@ -137,6 +138,7 @@ usersController.getFlaggedUsers = async function (req, res) {
     await renderIfAdminOrGlobalMod('users:flags', req, res);
 };
 
+/*
 usersController.getStudentUsers = async function (req, res) {
     await usersController.renderUsersPage('users:students', req, res);
 };
@@ -144,6 +146,7 @@ usersController.getStudentUsers = async function (req, res) {
 usersController.getInstructorUsers = async function (req, res) {
     await usersController.renderUsersPage('users:instructors', req, res);
 };
+*/ // Commented out due to incomplete feature
 
 async function renderIfAdminOrGlobalMod(set, req, res) {
     const isAdminOrGlobalMod = await user.isAdminOrGlobalMod(req.uid);
@@ -166,9 +169,9 @@ usersController.getUsers = async function (set, uid, query) {
         'users:online': { title: '[[pages:users/online]]', crumb: '[[global:online]]' },
         'users:banned': { title: '[[pages:users/banned]]', crumb: '[[user:banned]]' },
         'users:flags': { title: '[[pages:users/most-flags]]', crumb: '[[users:most_flags]]' },
-        'users:students': { title: '[[pages:users/students]]', crumb: '[[user:students]]' },
-        'users:instructors': { title: '[[pages:users/instructors]]', crumb: '[[user:instructors]]' },
-
+        // 'users:students': { title: '[[pages:users/students]]', crumb: '[[user:students]]' },
+        // 'users:instructors': { title: '[[pages:users/instructors]]', crumb: '[[user:instructors]]' },
+        // Commented out due to incomplete feature
     };
 
     if (!setToData[set]) {
@@ -213,9 +216,9 @@ usersController.getUsersAndCount = async function (set, uid, start, stop) {
             return await db.sortedSetCount('users:online', Date.now() - 86400000, '+inf');
         } else if (set === 'users:banned' || set === 'users:flags') {
             return await db.sortedSetCard(set);
-        } else if (set === 'users:students' || set === 'users:instructors') {
+        } /* else if (set === 'users:students' || set === 'users:instructors') {
             return await db.sortedSetCard(set);
-        }
+        } */ // Commented out due to incomplete feature
         return await db.getObjectField('global', 'userCount');
     }
     async function getUsers() {

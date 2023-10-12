@@ -47,6 +47,9 @@ async function getUsers(req, res) {
             joindate: 'users:joindate',
             lastonline: 'users:online',
             flags: 'users:flags',
+            // students: 'users:students',
+            // instructors: 'users:instructors',
+            // Commented out due to incomplete feature
         };
 
         const set = [];
@@ -62,12 +65,14 @@ async function getUsers(req, res) {
         if (filterBy.includes('banned')) {
             set.push('users:banned');
         }
-        if (filterBy.includes('student')) {
+        /*
+        if (filterBy.includes('students')) {
             set.push('users:students');
         }
-        if (filterBy.includes('instructor')) {
+        if (filterBy.includes('instructors')) {
             set.push('users:instructors');
         }
+        */ // Commented out due to incomplete feature
         if (!set.length) {
             set.push('users:online');
             sortBy = 'lastonline';
