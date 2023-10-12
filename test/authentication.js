@@ -605,7 +605,7 @@ describe('authentication', () => {
             });
 
             assert.strictEqual(res.statusCode, 200);
-            assert.strictEqual(body.username, 'apiUserTarget 💫🌳');
+            assert.strictEqual(body.username, 'apiUserTarget ⭐🌱');
         });
 
         it('should fail if _uid is not passed in with master token', async () => {
@@ -633,7 +633,7 @@ describe('authentication', () => {
             });
 
             assert.strictEqual(res.statusCode, 200);
-            assert.strictEqual(body.username, 'apiUserTarget 💫🌳');
+            assert.strictEqual(body.username, 'apiUserTarget ⭐🌱');
         });
     });
 });
