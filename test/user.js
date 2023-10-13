@@ -3092,7 +3092,6 @@ describe('User', () => {
             const userBadges = await User.calculateBadge(data);
 
             assert.strictEqual(userBadges, '🌟🌷');
-
         });
     });
 

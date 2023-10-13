@@ -115,7 +115,7 @@ module.exports = function (User) {
             throw new TypeError('The function must return a string');
         }
         return userBadges.join('');
-    }
+    };
 
     User.getUsersFields = async function (uids, fields) {
         if (!Array.isArray(uids) || !uids.length) {
@@ -297,7 +297,7 @@ module.exports = function (User) {
                 }
 
                 const badges = await User.calculateBadge(user);
-                user.username += ' ' + badges;
+                user.username += ` ${badges}`;
 
                 if (user.hasOwnProperty('email')) {
                     user.email = validator.escape(
