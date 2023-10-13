@@ -205,7 +205,7 @@ describe('Post\'s', () => {
                 assert.equal(data.upvoteCount, 1);
                 assert.equal(data.downvoteCount, 0);
                 assert(Array.isArray(data.upvoters));
-                assert.equal(data.upvoters[0].username, 'upvoter');
+                assert.equal(data.upvoters[0].username, 'upvoter 💫🌳');
                 done();
             });
         });
@@ -214,7 +214,7 @@ describe('Post\'s', () => {
             socketPosts.getUpvoters({ uid: globalModUid }, [postData.pid], (err, data) => {
                 assert.ifError(err);
                 assert.equal(data[0].otherCount, 0);
-                assert.equal(data[0].usernames, 'upvoter');
+                assert.equal(data[0].usernames, 'upvoter 💫🌳');
                 done();
             });
         });

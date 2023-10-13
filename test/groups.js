@@ -192,7 +192,7 @@ describe('Groups', () => {
         it('should search group members', (done) => {
             socketGroups.searchMembers({ uid: adminUid }, { groupName: 'Test', query: 'test' }, (err, data) => {
                 assert.ifError(err);
-                assert.strictEqual('testuser', data.users[0].username);
+                assert.strictEqual('testuser ⭐🌱', data.users[0].username);
                 done();
             });
         });

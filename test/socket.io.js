@@ -216,7 +216,7 @@ describe('socket.io', () => {
 
     it('should load user groups', async () => {
         const { users } = await socketAdmin.user.loadGroups({ uid: adminUid }, [adminUid]);
-        assert.strictEqual(users[0].username, 'admin');
+        assert.strictEqual(users[0].username, 'admin ⭐🌱');
         assert(Array.isArray(users[0].groups));
     });
 
@@ -681,7 +681,7 @@ describe('socket.io', () => {
 
         it('should error if uid doesnt have email', (done) => {
             socketAdmin.user.sendPasswordResetEmail({ uid: adminUid }, [adminUid], (err) => {
-                assert.strictEqual(err.message, '[[error:user-doesnt-have-email, admin]]');
+                assert.strictEqual(err.message, '[[error:user-doesnt-have-email, admin 💫🌳]]');
                 done();
             });
         });

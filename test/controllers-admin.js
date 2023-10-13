@@ -290,7 +290,7 @@ describe('Admin Controllers', () => {
             assert.ifError(err);
             assert.strictEqual(res.statusCode, 200);
             assert(body);
-            assert.strictEqual(body.users[0].username, 'admin');
+            assert.strictEqual(body.users[0].username, 'admin ⭐🌱');
             done();
         });
     });
@@ -779,7 +779,7 @@ describe('Admin Controllers', () => {
             });
             assert(body.reports);
             assert(Array.isArray(body.reports));
-            assert.strictEqual(body.reports[0].reporter.username, 'regular');
+            assert.strictEqual(body.reports[0].reporter.username, 'regular ⭐🌳');
         });
     });
 
