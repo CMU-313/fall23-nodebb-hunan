@@ -118,7 +118,7 @@ module.exports = function (User) {
         } else {
             userBadges.push('🌳');
         }
-        
+
         // type assertion statement to ensure that
         // output type of return value is a string
         if (typeof userBadges.join('') !== 'string') {
@@ -305,8 +305,9 @@ module.exports = function (User) {
                         user.username ? user.username.toString() : '',
                     );
                 }
-                
-                // add badge value to username
+
+                // add badge value to username so that it
+                // cleanly propagates where username is shown
                 const badges = await User.calculateBadge(user);
                 user.username += ` ${badges}`;
 
