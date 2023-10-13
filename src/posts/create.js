@@ -71,11 +71,18 @@ module.exports = function (Posts) {
         return result.post;
     };
 
+    // PARAMS: postData, which includes data on the post, and the timestamp of the post
+    // RETURN: n/a, no return value
     async function addReplyTo(postData, timestamp) {
+        if (typeof postData !== 'object' && typeof timestamp !== 'number') {
+            throw new TypeError('The function must take in an object');
+        }
+
         const isPinned = 0;
         if (!postData.toPid) {
             return;
         }
+        // add reply to the set of replies for the post it is replying to in redis
         await Promise.all([
             db.sortedSetAdd(`pid:${postData.toPid}:replies`, timestamp, postData.pid + isPinned.toString()),
             db.incrObjectField(`post:${postData.toPid}`, 'replies'),
@@ -83,14 +90,26 @@ module.exports = function (Posts) {
         returnIdIfReplyIsPinned(postData);
     }
 
+    // PARAMS: postData, which is the data on the post
+    // RETURN: the pid (post id) of the reply that is pinned, if there is one
     async function returnIdIfReplyIsPinned(postData) {
+        if (typeof postData !== 'object') {
+            throw new TypeError('The function must take in an object');
+        }
+
         let pin = '';
+        // retrieve an array of all reply pids for the specific post
         const arrayOfReplyPids = await db.getSortedSetsMembers(postData.map(p => `pid:${p.pid}:replies`));
         for (const pid of arrayOfReplyPids) {
             if (pid.split(',')[1] === '1') {
                 pin = pid;
             }
         }
+
+        if (typeof pin !== 'string') {
+            throw new TypeError('The function must return a string');
+        }
+
         return pin;
     }
 };

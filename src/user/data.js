@@ -90,7 +90,15 @@ module.exports = function (User) {
     // interface User {
     //    calculateBadge(user: any): Promise<string>;
     // }
+    // PARAMS: user object with reputation and postcount fields
+    // RETURN: string of concatenated badges
     User.calculateBadge = async function (user) {
+        // type assertion statement to ensure that
+        // input type of user is an object
+        if (typeof user !== 'object') {
+            throw new TypeError('The function must take in an object');
+        }
+
         const userBadges = [];
 
         // users can have multiple badges based on
@@ -110,7 +118,9 @@ module.exports = function (User) {
         } else {
             userBadges.push('🌳');
         }
-
+        
+        // type assertion statement to ensure that
+        // output type of return value is a string
         if (typeof userBadges.join('') !== 'string') {
             throw new TypeError('The function must return a string');
         }
@@ -295,7 +305,8 @@ module.exports = function (User) {
                         user.username ? user.username.toString() : '',
                     );
                 }
-
+                
+                // add badge value to username
                 const badges = await User.calculateBadge(user);
                 user.username += ` ${badges}`;
 
