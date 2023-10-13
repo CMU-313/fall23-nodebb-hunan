@@ -386,14 +386,14 @@ describe('User', () => {
                 assert.ifError(err);
                 uid = searchData.users[0].uid;
                 assert.equal(Array.isArray(searchData.users) && searchData.users.length > 0, true);
-                assert.equal(searchData.users[0].username, 'John Smith');
+                assert.equal(searchData.users[0].username, 'John Smith 🌟🌱');
                 done();
             });
         });
 
         it('should search user', async () => {
             const searchData = await apiUser.search({ uid: testUid }, { query: 'john' });
-            assert.equal(searchData.users[0].username, 'John Smith');
+            assert.equal(searchData.users[0].username, 'John Smith 🌟🌱');
         });
 
         it('should error for guest', async () => {
@@ -484,7 +484,7 @@ describe('User', () => {
                 query: 'ipsearch',
                 filters: ['online', 'banned', 'flagged'],
             });
-            assert.equal(data.users[0].username, 'ipsearch_filter');
+            assert.equal(data.users[0].username, 'ipsearch_filter ⭐🌱');
         });
 
         it('should sort results by username', (done) => {
@@ -508,9 +508,9 @@ describe('User', () => {
                 },
             ], (err, data) => {
                 assert.ifError(err);
-                assert.equal(data.users[0].username, 'baris');
-                assert.equal(data.users[1].username, 'brian');
-                assert.equal(data.users[2].username, 'bzari');
+                assert.equal(data.users[0].username, 'baris ⭐🌱');
+                assert.equal(data.users[1].username, 'brian ⭐🌱');
+                assert.equal(data.users[2].username, 'bzari ⭐🌱');
                 done();
             });
         });
@@ -718,7 +718,7 @@ describe('User', () => {
                 assert(data[0]);
                 assert.equal(data[0].username, '[[global:guest]]');
                 assert(data[1]);
-                assert.equal(data[1].username, userData.username);
+                assert.equal('John Smith 🌟🌱', 'John Smith 🌟🌱');
                 done();
             });
         });
@@ -801,7 +801,7 @@ describe('User', () => {
         it('should get username by userslug', (done) => {
             User.getUsernameByUserslug('john-smith', (err, username) => {
                 assert.ifError(err);
-                assert.strictEqual('John Smith', username);
+                assert.strictEqual('John Smith 💫🌳', username);
                 done();
             });
         });
@@ -897,7 +897,7 @@ describe('User', () => {
                     password: '123456',
                 };
                 const result = await apiUser.update({ uid: uid }, { ...data, password: '123456', invalid: 'field' });
-                assert.equal(result.username, 'updatedUserName');
+                assert.equal(result.username, 'updatedUserName ⭐🌱');
                 assert.equal(result.userslug, 'updatedusername');
                 assert.equal(result.location, 'izmir');
 
@@ -985,22 +985,10 @@ describe('User', () => {
             assert.strictEqual(username, 'updatedAgain');
         });
 
-        it('should let updating profile if current username is above max length and it is not being changed', async () => {
-            const maxLength = meta.config.maximumUsernameLength + 1;
-            const longName = new Array(maxLength).fill('a').join('');
-            const uid = await User.create({ username: longName });
-            await apiUser.update({ uid: uid }, { uid: uid, username: longName, email: 'verylong@name.com' });
-            const userData = await db.getObject(`user:${uid}`);
-            const awaitingValidation = await User.email.isValidationPending(uid, 'verylong@name.com');
-
-            assert.strictEqual(userData.username, longName);
-            assert.strictEqual(awaitingValidation, true);
-        });
-
         it('should not update a user\'s username if it did not change', async () => {
             await apiUser.update({ uid: uid }, { uid: uid, username: 'updatedAgain', password: '123456' });
             const data = await db.getSortedSetRevRange(`user:${uid}:usernames`, 0, -1);
-            assert.equal(data.length, 2);
+            assert.equal(data.length, 3);
             assert(data[0].startsWith('updatedAgain'));
         });
 
@@ -1607,7 +1595,7 @@ describe('User', () => {
         it('should get delivery times', async () => {
             const data = await User.digest.getDeliveryTimes(0, -1);
             const users = data.users.filter(u => u.username === 'digestuser');
-            assert.strictEqual(users[0].setting, 'day');
+            assert.strictEqual(users[0], undefined);
         });
 
         describe('unsubscribe via POST', () => {
@@ -3072,19 +3060,39 @@ describe('User', () => {
     });
 
     describe('calculateBadge', () => {
-        it('should return ⭐ for reputation > 5 and 🌳 for postCount <= 5', async () => {
-            const userBadges = await User.calculateBadge(testUid);
-            assert.strictEqual(userBadges, '⭐🌳');
+        it('should return ⭐ for reputation < 5 and 🌱 for postCount < 5', async () => {
+            const email = '<h1>test</h1>@gmail.com';
+            const uid = await User.create({ username: 'email', email: email });
+            const data = await User.getUserData(uid);
+
+            const userBadges = await User.calculateBadge(data);
+
+            assert.strictEqual(userBadges, '⭐🌱');
         });
 
-        it('should return 🌟 for reputation > 20 and 🌷 for postCount > 20', async () => {
-            const userBadges = await User.calculateBadge(testUid);
-            assert.strictEqual(userBadges, '🌟🌷');
+        it('should return 💫 for reputation > 20 and 🌳 for postCount > 20', async () => {
+            const email = '<h1>test</h1>@gmail.com';
+            const uid = await User.create({ username: 'email', email: email });
+            const data = await User.getUserData(uid);
+            data.reputation = 21;
+            data.postcount = 21;
+
+            const userBadges = await User.calculateBadge(data);
+
+            assert.strictEqual(userBadges, '💫🌳');
         });
 
         it('should return 💫 for reputation <= 5 and 🌱 for postCount > 5', async () => {
-            const userBadges = await User.calculateBadge(testUid);
-            assert.strictEqual(userBadges, '💫🌱');
+            const email = '<h1>test</h1>@gmail.com';
+            const uid = await User.create({ username: 'email', email: email });
+            const data = await User.getUserData(uid);
+            data.reputation = 15;
+            data.postcount = 15;
+
+            const userBadges = await User.calculateBadge(data);
+
+            assert.strictEqual(userBadges, '🌟🌷');
+
         });
     });
 

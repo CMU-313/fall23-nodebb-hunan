@@ -88,9 +88,9 @@ module.exports = function (User) {
 
     // type signature:
     // interface User {
-    //    calculateBadge(uid: number): Promise<string>;
+    //    calculateBadge(user: any): Promise<string>;
     // }
-    function calculateBadge(user) {
+    User.calculateBadge = async function (user) {
         const userBadges = [];
 
         // users can have multiple badges based on
@@ -296,8 +296,8 @@ module.exports = function (User) {
                     );
                 }
 
-                const badges = calculateBadge(user);
-                user.username += ` ${badges}`;
+                const badges = await User.calculateBadge(user);
+                user.username += ' ' + badges;
 
                 if (user.hasOwnProperty('email')) {
                     user.email = validator.escape(
