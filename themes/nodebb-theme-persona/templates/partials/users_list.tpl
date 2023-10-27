@@ -6,6 +6,8 @@
         <span>
             <i component="user/status" class="fa fa-circle status {users.status}" title="[[global:{users.status}]]"></i>
             <a href="{config.relative_path}/user/{users.userslug}">{users.username}</a>
+            <br>
+            <p small class="label group-label inline-block" style="color:white;background-color: black;">{users.accounttype}</small></p>
         </span>
         <br/>
 

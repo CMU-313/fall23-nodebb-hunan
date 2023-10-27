@@ -4,6 +4,10 @@
     <!-- IF !reputation:disabled -->
     <li><a href="{config.relative_path}/users?section=sort-reputation">[[users:most_reputation]]</a></li>
     <!-- ENDIF !reputation:disabled -->
+
+    <li><a href="{config.relative_path}/users?section=students">[[users:students]]</a></li>
+    <li><a href="{config.relative_path}/users?section=instructors">[[users:instructors]]</a></li>
+
     <!-- IF isAdminOrGlobalMod -->
     <li><a href="{config.relative_path}/users?section=flagged">[[users:most_flags]]</a></li>
     <li><a href="{config.relative_path}/users?section=banned">[[user:banned]]</a></li>

@@ -85,22 +85,22 @@ module.exports = function (User) {
     }
 
     async function removeFromSortedSets(uid) {
-        await db.sortedSetsRemove(
-            [
-                "users:joindate",
-                "users:postcount",
-                "users:reputation",
-                "users:banned",
-                "users:banned:expire",
-                "users:flags",
-                "users:online",
-                "digest:day:uids",
-                "digest:week:uids",
-                "digest:biweek:uids",
-                "digest:month:uids",
-            ],
-            uid,
-        );
+        await db.sortedSetsRemove([
+            'users:joindate',
+            'users:postcount',
+            'users:reputation',
+            'users:banned',
+            'users:banned:expire',
+            'users:flags',
+            'users:online',
+            // 'users:students',
+            // 'users:instructors',
+            // Commented out due to incomplete feature
+            'digest:day:uids',
+            'digest:week:uids',
+            'digest:biweek:uids',
+            'digest:month:uids',
+        ], uid);
     }
 
     User.deleteAccount = async function (uid) {

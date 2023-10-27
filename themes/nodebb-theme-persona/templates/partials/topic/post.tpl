@@ -10,8 +10,8 @@
             <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">{posts.user.displayname}</a>
         </strong>
         <strong>
-        <span style = "color:white !important; background-color: #D3D3D3;">
-        <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">   {posts.user.accounttype}</a>
+        <span style = "color:white !important; background-color: darkgray !important;">
+        <a itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">   {posts.user.accounttype}</a>
         </span>
         </strong>
         <!-- IMPORT partials/topic/badge.tpl -->
@@ -47,6 +47,9 @@
         <span class="visible-xs-inline-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
             <a class="permalink" href="{config.relative_path}/post/{posts.pid}"><span class="timeago" title="{posts.timestampISO}"></span></a>
         </span>
+    </small>
+    <small class="pull-right">
+        <span class="bookmarked"><i class="fa fa-bookmark-o"></i></span>
     </small>
 </div>
 

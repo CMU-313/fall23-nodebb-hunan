@@ -61,6 +61,30 @@
         <!-- IMPORT partials/topic/deleted-message.tpl -->
         {{{ end }}}
 
+        <div>
+            <button id="toggleButton" style="background-color:#ffffcc; border-radius: 15px; cursor: pointer;" onclick="toggleDisplay('myDiv', 'toggleButton')">
+                Endorse This Post
+            </button>
+            <div id="myDiv" style="display: none;">
+                This post has been endorsed.
+            </div>
+
+            <script>
+                function toggleDisplay(textID, buttonID) {
+                    const text = document.getElementById(textID);
+                    const button = document.getElementById(buttonID);
+                    if (text.style.display === 'none' || text.style.display === '') {
+                        text.style.display = 'block';
+                        button.innerText = 'Unendorse This Post';
+                    } else {
+                        text.style.display = 'none';
+                        button.innerText = 'Endorse This Post';
+                    }
+                }
+            </script>
+        </div>
+        <p style="margin-bottom: 20px;"></p>
+
         <ul component="topic" class="posts timeline" data-tid="{tid}" data-cid="{cid}">
             {{{each posts}}}
                 <li component="post" class="{{{ if posts.deleted }}}deleted{{{ end }}} {{{ if posts.selfPost }}}self-post{{{ end }}} {{{ if posts.topicOwnerPost }}}topic-owner-post{{{ end }}}" <!-- IMPORT partials/data/topic.tpl -->>

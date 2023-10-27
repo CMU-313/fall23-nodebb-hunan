@@ -21,6 +21,9 @@ usersController.index = async function (req, res, next) {
         "sort-reputation": usersController.getUsersSortedByReputation,
         banned: usersController.getBannedUsers,
         flagged: usersController.getFlaggedUsers,
+        // students: usersController.getStudentUsers,
+        // instructors: usersController.getInstructorUsers,
+        // Commented out due to incomplete feature
     };
 
     if (req.query.query) {
@@ -71,6 +74,52 @@ usersController.getOnlineUsers = async function (req, res) {
     await render(req, res, userData);
 };
 
+/* usersController.getStudentUsers = async function (req, res) {
+    const [userData, guests] = await Promise.all([
+        usersController.getUsers('users:students', req.uid, req.query),
+        require('../socket.io/admin/rooms').getTotalGuestCount(),
+    ]);
+
+    let hiddenCount = 0;
+    if (!userData.isAdminOrGlobalMod) {
+        userData.users = userData.users.filter((user) => {
+            const showUser = user && (user.uid === req.uid || user.accounttype === 'student');
+            if (!showUser) {
+                hiddenCount += 1;
+            }
+            return showUser;
+        });
+    }
+
+    userData.anonymousUserCount = guests + hiddenCount;
+    userData.timeagoCutoff = 1000 * 60 * 60 * 24;
+
+    await render(req, res, userData);
+};
+ */
+// usersController.getInstructorUsers = async function (req, res) {
+//     const [userData, guests] = await Promise.all([
+//         usersController.getUsers('users:online', req.uid, req.query),
+//         require('../socket.io/admin/rooms').getTotalGuestCount(),
+//     ]);
+
+//     let hiddenCount = 0;
+//     if (!userData.isAdminOrGlobalMod) {
+//         userData.users = userData.users.filter((user) => {
+//             const showUser = user && (user.uid === req.uid || user.userStatus !== 'offline');
+//             if (!showUser) {
+//                 hiddenCount += 1;
+//             }
+//             return showUser;
+//         });
+//     }
+
+//     userData.anonymousUserCount = guests + hiddenCount;
+//     userData.timeagoCutoff = 1000 * 60 * 60 * 24;
+
+//     await render(req, res, userData);
+// }; Commented out due to incomplete feature
+
 usersController.getUsersSortedByPosts = async function (req, res) {
     await usersController.renderUsersPage("users:postcount", req, res);
 };
@@ -94,6 +143,16 @@ usersController.getFlaggedUsers = async function (req, res) {
     await renderIfAdminOrGlobalMod("users:flags", req, res);
 };
 
+/*
+usersController.getStudentUsers = async function (req, res) {
+    await usersController.renderUsersPage('users:students', req, res);
+};
+
+usersController.getInstructorUsers = async function (req, res) {
+    await usersController.renderUsersPage('users:instructors', req, res);
+};
+*/ // Commented out due to incomplete feature
+
 async function renderIfAdminOrGlobalMod(set, req, res) {
     const isAdminOrGlobalMod = await user.isAdminOrGlobalMod(req.uid);
     if (!isAdminOrGlobalMod) {
@@ -109,30 +168,15 @@ usersController.renderUsersPage = async function (set, req, res) {
 
 usersController.getUsers = async function (set, uid, query) {
     const setToData = {
-        "users:postcount": {
-            title: "[[pages:users/sort-posts]]",
-            crumb: "[[users:top_posters]]",
-        },
-        "users:reputation": {
-            title: "[[pages:users/sort-reputation]]",
-            crumb: "[[users:most_reputation]]",
-        },
-        "users:joindate": {
-            title: "[[pages:users/latest]]",
-            crumb: "[[global:users]]",
-        },
-        "users:online": {
-            title: "[[pages:users/online]]",
-            crumb: "[[global:online]]",
-        },
-        "users:banned": {
-            title: "[[pages:users/banned]]",
-            crumb: "[[user:banned]]",
-        },
-        "users:flags": {
-            title: "[[pages:users/most-flags]]",
-            crumb: "[[users:most_flags]]",
-        },
+        'users:postcount': { title: '[[pages:users/sort-posts]]', crumb: '[[users:top_posters]]' },
+        'users:reputation': { title: '[[pages:users/sort-reputation]]', crumb: '[[users:most_reputation]]' },
+        'users:joindate': { title: '[[pages:users/latest]]', crumb: '[[global:users]]' },
+        'users:online': { title: '[[pages:users/online]]', crumb: '[[global:online]]' },
+        'users:banned': { title: '[[pages:users/banned]]', crumb: '[[user:banned]]' },
+        'users:flags': { title: '[[pages:users/most-flags]]', crumb: '[[users:most_flags]]' },
+        // 'users:students': { title: '[[pages:users/students]]', crumb: '[[user:students]]' },
+        // 'users:instructors': { title: '[[pages:users/instructors]]', crumb: '[[user:instructors]]' },
+        // Commented out due to incomplete feature
     };
 
     if (!setToData[set]) {
@@ -181,8 +225,10 @@ usersController.getUsersAndCount = async function (set, uid, start, stop) {
             );
         } else if (set === "users:banned" || set === "users:flags") {
             return await db.sortedSetCard(set);
-        }
-        return await db.getObjectField("global", "userCount");
+        } /* else if (set === 'users:students' || set === 'users:instructors') {
+            return await db.sortedSetCard(set);
+        } */ // Commented out due to incomplete feature
+        return await db.getObjectField('global', 'userCount');
     }
     async function getUsers() {
         if (set === "users:online") {
