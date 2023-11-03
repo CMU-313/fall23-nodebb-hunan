@@ -31,16 +31,11 @@ jobs:
       TEST_ENV: ${{ matrix.test_env || 'production' }}
     
     services:
-      redis:
-        image: 'redis:2.8.23'
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+      mongo:
+        image: 'mongo:3.7'
         ports:
-          - 6379:6379
+          # Maps port 27017 on service container to the host
+          - 27017:27017
     
     steps:
       - uses: actions/checkout@v3
@@ -57,29 +52,29 @@ jobs:
         with:
           useLockFile: false
 
-      - name: Setup on Redis
-        if: startsWith(matrix.database, 'redis')
+      - name: Setup on MongoDB
         env:
           SETUP: >-
             {
-              "url": "http://127.0.0.1:4567/forum",
+              "url": "http://127.0.0.1:4567",
               "secret": "abcdef",
               "admin:username": "admin",
               "admin:email": "test@example.org",
               "admin:password": "hAN3Eg8W",
               "admin:password:confirm": "hAN3Eg8W",
 
-              "database": "redis",
-              "redis:host": "127.0.0.1",
-              "redis:port": 6379,
-              "redis:password": "",
-              "redis:database": 0
+              "database": "mongo",
+              "mongo:host": "127.0.0.1",
+              "mongo:port": 27017,
+              "mongo:username": "",
+              "mongo:password": "",
+              "mongo:database": "nodebb"
             }
           CI: >-
             {
               "host": "127.0.0.1",
-              "database": 1,
-              "port": 6379
+              "port": 27017,
+              "database": "ci_test"
             }
         run: |
           node app --setup="${SETUP}" --ci="${CI}"
